@@ -8,7 +8,8 @@ import os
 
 TM=time.strftime("%Y:%m:%d-%H:%M",time.localtime())
 
-LOG_FORMAT="%(asctime)s - %(levelname)s - [%(filename)s,line:%(lineno)d] - %(message)s"
+#LOG_FORMAT="%(asctime)s - %(levelname)s - [%(filename)s,line:%(lineno)d] - %(message)s"
+LOG_FORMAT="%(asctime)s-%(levelname)s-[line:%(lineno)d]-%(message)s"
 logging.basicConfig(level=logging.INFO, format=LOG_FORMAT)
 
 

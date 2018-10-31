@@ -49,7 +49,7 @@ def main():
         if os.path.isfile(iter_counter_path):
             with open(iter_counter_path, "rb") as f:
                 iter_start= int(f.read())
-                epoch_ = int(np.ceil(iter_ / batch_n))
+                epoch_ = int(np.ceil(iter_start / batch_n))
             logging.info("Training was interrupted. Continuing at epoch: {}, iter:{}".format(epoch_,iter_start))
             saver.restore(sess, checkpoint_save_path)
         else:
@@ -63,7 +63,7 @@ def main():
             epoch_i = int(np.ceil(iter_i / batch_n))
             # iter counter
             with open(iter_counter_path, "wb") as f:
-                f.write(b"%d" % iter)  # b mean binary
+                f.write(b"%d" % iter_i)  # b mean binary
 
             if iter_i% show_iter!=0:
                 #train
@@ -72,9 +72,9 @@ def main():
                 train_summary, _ = sess.run([train_merged,train_op],feed_dict={X: x_batch,Y: y_batch})
 
                 try:
-                    train_writer.add_summary(train_summary, iter)
+                    train_writer.add_summary(train_summary, iter_i)
                 except:
-                    train_writer.closs()
+                    train_writer.close()
                     logging.error("add train summary failed, closed writer")
 
 
@@ -86,9 +86,9 @@ def main():
                 # do not need batch, as the testset is much small
 
                 try:
-                    test_writer.add_summary(test_summary, global_step=iter)
+                    test_writer.add_summary(test_summary, global_step=iter_i)
                 except:
-                    test_writer.closs()
+                    test_writer.close()
                     logging.error("add test summary failed, closed writer")
 
                 #logging.info("{}\n{}\n{}".format(y_test, test_pred,test_crt_pred))
@@ -98,7 +98,7 @@ def main():
                              .format(epoch_i,iter_i,test_loss,test_acc,test_precision_score,test_recall_score))
 
                 #save iter model
-                if iter%checkpoint_iter==0 and iter/checkpoint_iter >=0:
+                if iter_i%checkpoint_iter==0 and iter_i/checkpoint_iter >=0:
                     saver.save(sess,checkpoint_save_path)#the global_step tell which model to save
 
         train_writer.close()
