@@ -6,9 +6,9 @@ import time,timeit
 import logging
 import os
 
-TM=time.strftime("%Y:%m:%d-%H:%M:%S",time.localtime())
+TM=time.strftime("%Y:%m:%d-%H:%M",time.localtime())
 
-LOG_FORMAT="%(asctime)s - %(levelname)s - [line:%(lineno)d] - %(message)s"
+LOG_FORMAT="%(asctime)s - %(levelname)s - [%(filename)s,line:%(lineno)d] - %(message)s"
 logging.basicConfig(level=logging.INFO, format=LOG_FORMAT)
 
 
@@ -29,24 +29,24 @@ def mkdir(path):
         logging.info("--- create folder: %s"%path)
     else:
         logging.info("folder is exists")
-    return path
+    return 0
 
 
 
 device="/cpu:0"
 
-#checkpoint_dir= mkdir("./checkpoints/")
-checkpoint_dir= "./checkpoints/"
-checkpoint_save_path=checkpoint_dir+"model.ckp"
-iter_counter_path=checkpoint_dir+"model.ckp.iter"
-final_model_path=checkpoint_dir+"model"
+mkdir("./checkpoints/")
+#checkpoint_dir= "./checkpoints/"
+checkpoint_save_path="./checkpoints/model.ckp"
+iter_counter_path="./checkpoints/model.ckp.iter"
+final_model_path="./checkpoints/final_model/"
 train_logdir="./tensorboard/train/"
 test_logdir="./tensorboard/test/"
 
 #params
 lr=0.001 #learning rate
 epoch_n=500
-batch_size=64
+batch_size=2
 #batch_n= int(np.ceil(len(data) / batch_size))
 show_iter=100
 checkpoint_iter=10000
