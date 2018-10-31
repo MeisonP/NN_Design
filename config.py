@@ -1,4 +1,4 @@
-# conding: utf-8
+#coding:utf-8
 # 2018.10.30
 # mason_P first nn design for classify
 
@@ -38,7 +38,8 @@ checkpoint_path= mkdir("./checkpoints/model.ckp")
 checkpoint_epoch_path=mkdir(os.path.join(checkpoint_path,".epoch"))
 final_model_path=mkdir("./checkpoints/model")
 
-logdir=mkdir("./log/{}".format(TM))
+train_logdir=mkdir("./train_log/{}".format(TM))
+test_logdir=mkdir("./test_log/{}".format(TM))
 
 #params
 lr=0.0001 #learning rate

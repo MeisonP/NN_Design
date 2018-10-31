@@ -1,4 +1,4 @@
-# conding: utf-8
+#coding:utf-8
 # 2018.10.30
 # mason_P first nn design for classify
 from config import *
@@ -32,9 +32,9 @@ class net:
     @classmethod
     @func_track
     def dense_layer(self,input_tensor,hedden_number,name_):
-        regularizer = tf.contrib.layers.l2_regularizer(lambd) # using zheng-ze-hua in fc
+        regularization = tf.contrib.layers.l2_regularizer(lambd) #对fc网络使用正则化
         fc = tf.layers.dense(input_tensor,hedden_number,activation=tf.nn.relu,
-                            kernel_regularizer=regularizer,name=name_)
+                            kernel_regularizer=regularization,name=name_)
         return fc
 
     #net-build
