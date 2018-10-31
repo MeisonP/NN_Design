@@ -35,7 +35,7 @@ def mkdir(path):
 
 device="/gpu:0"
 checkpoint_path= mkdir("./checkpoints/model.ckp")
-checkpoint_epoch_path=mkdir(os.path.join(checkpoint_path,".epoch"))
+checkpoint_iter_path=mkdir(os.path.join(checkpoint_path,".iter"))
 final_model_path=mkdir("./checkpoints/model")
 
 train_logdir=mkdir("./train_log/{}".format(TM))
@@ -47,6 +47,7 @@ epoch_n=
 batch_size=
 batch_n=
 show_iter=100
+checkpoint_iter=10000
 classes= # the labels, classes=y_train or y_test
 
 lambd=0.01# 正则系数

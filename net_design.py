@@ -7,25 +7,6 @@ import numpy as np
 import os
 
 
-
-
-
-##class data
-class data:
-    @classmethod
-    @func_track
-    def load_images(self):
-        return img
-
-    @classmethod
-    @func_track
-    def pre_process(self):
-        return img
-
-
-
-
-
 ##class net
 class net:
     #dense_layer
