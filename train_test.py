@@ -6,7 +6,7 @@ from config import *
 from dataset import *
 import net_design
 import tensorflow as tf
-from sklearn.metrics import precision_score, recall_score
+#from sklearn.metrics import precision_score, recall_score
 import os
 
 
@@ -92,10 +92,10 @@ def main():
                     logging.error("add test summary failed, closed writer")
 
                 #logging.info("{}\n{}\n{}".format(y_test, test_pred,test_crt_pred))
-                test_precision_score=precision_score(y_test,test_crt_pred)
-                test_recall_score=recall_score(y_test,test_crt_pred)
-                logging.info("epoch:{0}\titer:{1}\ttest_loss:{2}\ttest_acc:{3}\tprecision:{4}\trecall:{5}"
-                             .format(epoch_i,iter_i,test_loss,test_acc,test_precision_score,test_recall_score))
+                #test_precision_score=precision_score(y_test,test_crt_pred)
+                #test_recall_score=recall_score(y_test,test_crt_pred)
+                logging.info("epoch:{0}\titer:{1}\ttest_loss:{2}\ttest_acc:{3}"
+                             .format(epoch_i,iter_i,test_loss,test_acc))
 
                 #save iter model
                 if iter_i%checkpoint_iter==0 and iter_i/checkpoint_iter >=0:
@@ -114,5 +114,5 @@ def main():
 
 
 if __name__=="__main__":
-    logging.info("**********************mason_p nn_design(%s)***********************" % TM)
+
     main()
