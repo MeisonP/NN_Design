@@ -45,8 +45,8 @@ test_logdir="./tensorboard/test/"
 
 #params
 lr=0.001 #learning rate
-epoch_n=500
-batch_size=2
+epoch_n=100
+batch_size=8
 #batch_n= int(np.ceil(len(data) / batch_size))
 show_iter=100
 checkpoint_iter=10000

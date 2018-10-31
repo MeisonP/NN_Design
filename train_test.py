@@ -1,6 +1,6 @@
 #coding:utf-8
 # 2018.10.30
-# mason_P first nn design for classify， testing
+# mason_P first nn design for classify
 
 from config import *
 from dataset import *
@@ -48,65 +48,58 @@ def main():
         ###(5)initial variable,
         if os.path.isfile(iter_counter_path):
             with open(iter_counter_path, "rb") as f:
-                iter_i= int(f.read())
-                epoch_start = int(np.ceil(iter_i / batch_n))
-                batch_start= iter_i % batch_n
-            logging.info("Training was interrupted. Continuing at epoch: {}, batch:{}, iter:{}".format(epoch_start,batch_start,iter_i))
+                iter_start= int(f.read())
+                epoch_ = int(np.ceil(iter_ / batch_n))
+            logging.info("Training was interrupted. Continuing at epoch: {}, iter:{}".format(epoch_,iter_start))
             saver.restore(sess, checkpoint_save_path)
         else:
-            epoch_start=0
-            batch_start=0
+            iter_start=0
             sess.run(tf.global_variables_initializer())
 
         ###(6)sess.run/ begin to iter cal
-        for epoch_i in range(epoch_start,epoch_n): # start from 0 to (epoch_n -1)
-            for batch_i in range(batch_start,batch_n):
-                iter= batch_n* epoch_i + batch_i # not Accumulate; 1 iter is one batch pass through cal;iter starts from 1, not 0
-                #logging.info("epoch{};batch{};iter{}".format(epoch_i,batch_i,iter))
-                # iter counter
-                with open(iter_counter_path, "wb") as f:
-                    f.write(b"%d" % iter)  # b mean binary
+        iter_max= batch_n*epoch_n # 1 iter is one batch
+        for iter_i in range(iter_start,iter_max):
 
-                if iter % show_iter!=0:
-                    #train
-                    x_batch,y_batch=random_batch(x_train,y_train,batch_size)
-                    train_merged=tf.summary.merge_all()
-                    train_summary, _ = sess.run([train_merged,train_op],feed_dict={X: x_batch,Y: y_batch})
+            epoch_i = int(np.ceil(iter_i / batch_n))
+            # iter counter
+            with open(iter_counter_path, "wb") as f:
+                f.write(b"%d" % iter)  # b mean binary
 
-                    try:
-                        train_writer.add_summary(train_summary, iter)
-                    except:
-                        train_writer.closs()
-                        logging.error("add train summary failed, closed writer")
+            if iter_i% show_iter!=0:
+                #train
+                x_batch,y_batch=random_batch(x_train,y_train,batch_size)
+                train_merged=tf.summary.merge_all()
+                train_summary, _ = sess.run([train_merged,train_op],feed_dict={X: x_batch,Y: y_batch})
 
-
-                else:
-                    #test, every 100iter
-                    test_merged=tf.summary.merge([loss_summary,acc_summary]) #or test_merged= tf.summary.merge_all()
-                    test_summary,test_loss, test_acc, test_pred, test_crt_pred= sess.run([test_merged,loss, acc, prediction,correct_prediction],
-                                                                              feed_dict={X: x_test, Y: y_test})
-                    # do not need batch, as the testset is much small
-
-                    try:
-                        test_writer.add_summary(test_summary, global_step=iter)
-                    except:
-                        test_writer.closs()
-                        logging.error("add test summary failed, closed writer")
-
-                    #logging.info("{}\n{}\n{}".format(y_test, test_pred,test_crt_pred))
-                    test_precision_score=precision_score(y_test,test_crt_pred)
-                    test_recall_score=recall_score(y_test,test_crt_pred)
-                    logging.info("epoch:{0}\titer:{1}\ttest_loss:{2}\ttest_acc:{3}\tprecision_score:{4}\trecall_score:{5}"
-                                 .format(epoch_i,iter,test_loss,test_acc,test_precision_score,test_recall_score))
-
-                    #save iter model
-                    if iter%checkpoint_iter==0 and iter/checkpoint_iter >=0:
-                        saver.save(sess,checkpoint_save_path)#the global_step tell which model to save
+                try:
+                    train_writer.add_summary(train_summary, iter)
+                except:
+                    train_writer.closs()
+                    logging.error("add train summary failed, closed writer")
 
 
+            else:
+                #test, every 100iter
+                test_merged=tf.summary.merge([loss_summary,acc_summary]) #or test_merged= tf.summary.merge_all()
+                test_summary,test_loss, test_acc, test_pred, test_crt_pred= sess.run([test_merged,loss, acc, prediction,correct_prediction],
+                                                                          feed_dict={X: x_test, Y: y_test})
+                # do not need batch, as the testset is much small
 
+                try:
+                    test_writer.add_summary(test_summary, global_step=iter)
+                except:
+                    test_writer.closs()
+                    logging.error("add test summary failed, closed writer")
 
+                #logging.info("{}\n{}\n{}".format(y_test, test_pred,test_crt_pred))
+                test_precision_score=precision_score(y_test,test_crt_pred)
+                test_recall_score=recall_score(y_test,test_crt_pred)
+                logging.info("epoch:{0}\titer:{1}\ttest_loss:{2}\ttest_acc:{3}\tprecision_score:{4}\trecall_score:{5}"
+                             .format(epoch_i,iter_i,test_loss,test_acc,test_precision_score,test_recall_score))
 
+                #save iter model
+                if iter%checkpoint_iter==0 and iter/checkpoint_iter >=0:
+                    saver.save(sess,checkpoint_save_path)#the global_step tell which model to save
 
         train_writer.close()
         test_writer.close()

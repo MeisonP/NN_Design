@@ -11,7 +11,7 @@ from sklearn.datasets import make_moons
 
 @func_track
 def load_date():
-    x_moons, y_moons=make_moons(n_samples=2000,noise=0.1,random_state=42)
+    x_moons, y_moons=make_moons(n_samples=20000,noise=0.1,random_state=42)
     return x_moons, y_moons
 
 data,label=load_date()
