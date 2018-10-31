@@ -22,7 +22,7 @@ def main():
         input=X
 
         ###set up net /build net
-        net=net_design.net.net_build(input)
+        net=net_design.network.net_build(input)
 
         ###loss func
         cross_entropy=tf.nn.sparse_softmax_cross_entropy_with_logits(labels=Y,logits=net["output"])
@@ -36,9 +36,9 @@ def main():
 
         ###acc
         #acc is not for/contain train, it comes from test, test dataset
-        predictiton=tf.argmax(net["output"],1) # get the index of the max one
+        prediction=tf.argmax(net["output"],1) # get the index of the max one
         #Accuracy= tf.nn.in_top_k(net["output"], Y,1)#y is ground_truth,
-        correct_prediction=tf.equal(predictiton,tf.argmax(Y,1))
+        correct_prediction=tf.equal(prediction,tf.argmax(Y,1))
         acc=tf.reduce_mean(tf.cast(correct_prediction,tf.float32)) #reduce_mean get the average of acc; tf.cast change the data type
         acc_summary=tf.summary.scalar("acc",acc)
 
