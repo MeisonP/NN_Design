@@ -14,10 +14,9 @@ class network:
 
     #dense_layer
     @classmethod
-    @func_track
-    def dense_layer(cls,input_tensor,hedden_number,name_):
+    def dense_layer(cls,input_tensor,hidden_number,name_):
         regularization = tf.contrib.layers.l2_regularizer(lambd) #对fc网络使用正则化
-        fc = tf.layers.dense(input_tensor,hedden_number,activation=tf.nn.relu,
+        fc = tf.layers.dense(input_tensor,hidden_number,activation=tf.nn.relu,
                             kernel_regularizer=regularization,name=name_)
         return fc
 

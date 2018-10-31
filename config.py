@@ -21,7 +21,7 @@ def func_track(func):
         return result
     return track
 
-@func_track
+
 def mkdir(path):
     folder=os.path.exists(path)
     if not folder:
@@ -33,13 +33,15 @@ def mkdir(path):
 
 
 
-device="/gpu:0"
-checkpoint_path= mkdir("./checkpoints/model.ckp")
-checkpoint_iter_path=mkdir(os.path.join(checkpoint_path,".iter"))# for iter counter
-final_model_path=mkdir("./checkpoints/model")
+device="/cpu:0"
 
-train_logdir=mkdir("./train_log/{}".format(TM))
-test_logdir=mkdir("./test_log/{}".format(TM))
+#checkpoint_dir= mkdir("./checkpoints/")
+checkpoint_dir= "./checkpoints/"
+checkpoint_save_path=checkpoint_dir+"model.ckp"
+iter_counter_path=checkpoint_dir+"model.ckp.iter"
+final_model_path=checkpoint_dir+"model"
+train_logdir="./tensorboard/train/"
+test_logdir="./tensorboard/test/"
 
 #params
 lr=0.001 #learning rate
