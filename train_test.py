@@ -94,7 +94,7 @@ def main():
                 #logging.info("{}\n{}\n{}".format(y_test, test_pred,test_crt_pred))
                 test_precision_score=precision_score(y_test,test_crt_pred)
                 test_recall_score=recall_score(y_test,test_crt_pred)
-                logging.info("epoch:{0}\titer:{1}\ttest_loss:{2}\ttest_acc:{3}\tprecision_score:{4}\trecall_score:{5}"
+                logging.info("epoch:{0}\titer:{1}\ttest_loss:{2}\ttest_acc:{3}\tprecision:{4}\trecall:{5}"
                              .format(epoch_i,iter_i,test_loss,test_acc,test_precision_score,test_recall_score))
 
                 #save iter model
